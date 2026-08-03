@@ -1,136 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opening YouTube...</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<title>Opening Video...</title>
 
-        body {
-            background: #111;
-            color: white;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        .container {
-            text-align: center;
-            width: 90%;
-            max-width: 420px;
-        }
+body{
+    background:#111827;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
 
-        .logo {
-            font-size: 60px;
-            margin-bottom: 20px;
-        }
+.container{
+    width:90%;
+    max-width:420px;
+    text-align:center;
+}
 
-        h1 {
-            margin-bottom: 12px;
-            font-size: 30px;
-        }
+.logo{
+    font-size:70px;
+    margin-bottom:20px;
+}
 
-        p {
-            color: #ccc;
-            line-height: 1.6;
-            margin-bottom: 28px;
-        }
+h1{
+    margin-bottom:12px;
+}
 
-        .button {
-            display: inline-block;
-            background: #ff0000;
-            color: white;
-            text-decoration: none;
-            padding: 16px 28px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            transition: .2s;
-        }
+p{
+    color:#bbb;
+    line-height:1.6;
+    margin-bottom:24px;
+}
 
-        .button:hover {
-            background: #d60000;
-        }
+img{
+    width:100%;
+    border-radius:12px;
+    margin-bottom:24px;
+    display:none;
+}
 
-        .small {
-            margin-top: 25px;
-            font-size: 14px;
-            color: #888;
-        }
-    </style>
+.button{
+    display:inline-block;
+    background:#ff0000;
+    color:white;
+    text-decoration:none;
+    padding:16px 28px;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:18px;
+}
+
+.small{
+    margin-top:20px;
+    color:#888;
+    font-size:14px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
 
-    <div class="logo">▶️</div>
+<div class="logo">📺</div>
 
-    <h1>Opening YouTube...</h1>
+<h1>Opening YouTube...</h1>
 
-    <p>
-        If the YouTube app doesn't open automatically,
-        tap the button below.
-    </p>
+<p>
+If nothing happens automatically,
+tap the button below.
+</p>
 
-    <a class="button"
-       id="openButton"
-       href="https://youtube.com/@YOUR_CHANNEL_HANDLE">
-        Open YouTube
-    </a>
+<img id="thumbnail">
 
-    <div class="small">
-        If you're using Instagram's in-app browser,
-        you may need to tap the button above.
-    </div>
+<a
+id="openButton"
+class="button"
+href="#">
+Open Video
+</a>
+
+<div class="small">
+Kiku Ki Pathshala ❤️
+</div>
 
 </div>
 
 <script>
 
-const handle = "kikukipathshala";
+const params=new URLSearchParams(window.location.search);
 
-const webUrl = `https://youtube.com/@${handle}`;
-const iosUrl = `youtube://www.youtube.com/@${handle}`;
-const androidIntent =
-`intent://www.youtube.com/@${handle}#Intent;scheme=https;package=com.google.android.youtube;end`;
+const videoId=params.get("v");
 
-document.getElementById("openButton").onclick = function (e) {
+const channelUrl="https://youtube.com/@kikukipathshala";
+
+if(!videoId){
+
+    window.location.replace(channelUrl);
+
+}
+
+const webUrl=`https://www.youtube.com/watch?v=${videoId}`;
+
+const iosUrl=`youtube://www.youtube.com/watch?v=${videoId}`;
+
+const androidIntent=
+`intent://www.youtube.com/watch?v=${videoId}#Intent;scheme=https;package=com.google.android.youtube;end`;
+
+document.getElementById("thumbnail").src=
+`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+document.getElementById("thumbnail").style.display="block";
+
+document.getElementById("openButton").href=webUrl;
+
+function openVideo(){
+
+    if(/android/i.test(navigator.userAgent)){
+        window.location=androidIntent;
+    }
+    else if(/iPad|iPhone|iPod/.test(navigator.userAgent)){
+        window.location=iosUrl;
+    }
+
+    setTimeout(()=>{
+        window.location=webUrl;
+    },1200);
+
+}
+
+window.onload=openVideo;
+
+document
+.getElementById("openButton")
+.onclick=function(e){
 
     e.preventDefault();
 
-    if (/android/i.test(navigator.userAgent)) {
-        window.location = androidIntent;
-    }
-    else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        window.location = iosUrl;
-    }
+    openVideo();
 
-    setTimeout(() => {
-        window.location = webUrl;
-    }, 1200);
-};
-
-// Attempt automatic open
-window.onload = () => {
-
-    if (/android/i.test(navigator.userAgent)) {
-        window.location = androidIntent;
-    }
-    else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        window.location = iosUrl;
-    }
-
-    setTimeout(() => {
-        window.location = webUrl;
-    }, 1200);
 };
 
 </script>
