@@ -171,17 +171,8 @@ const ua = navigator.userAgent;
 const isInstagram =
 /Instagram/i.test(ua);
 
-if(isInstagram){
-
-    document
-    .getElementById("notice")
-    .style.display = "block";
-
-}
-else{
-
+if (!isInstagram) {
     openVideo();
-
 }
 
 </script>
