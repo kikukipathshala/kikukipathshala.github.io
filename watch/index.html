@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Opening Video...</title>
+<title>Kiku Ki Pathshala</title>
 
 <style>
 *{
@@ -14,58 +14,76 @@
 }
 
 body{
+    font-family:Arial,Helvetica,sans-serif;
     background:#111827;
     color:#fff;
-    font-family:Arial,Helvetica,sans-serif;
     display:flex;
     justify-content:center;
     align-items:center;
     min-height:100vh;
+    padding:20px;
 }
 
 .container{
-    width:90%;
+    width:100%;
     max-width:420px;
     text-align:center;
 }
 
 .logo{
-    font-size:70px;
-    margin-bottom:20px;
+    font-size:72px;
+    margin-bottom:18px;
 }
 
 h1{
-    margin-bottom:12px;
+    font-size:30px;
+    margin-bottom:10px;
 }
 
 p{
-    color:#bbb;
+    color:#cfcfcf;
     line-height:1.6;
     margin-bottom:24px;
 }
 
 img{
     width:100%;
-    border-radius:12px;
+    border-radius:14px;
     margin-bottom:24px;
     display:none;
+    box-shadow:0 8px 24px rgba(0,0,0,.35);
 }
 
 .button{
     display:inline-block;
+    width:100%;
     background:#ff0000;
     color:white;
     text-decoration:none;
-    padding:16px 28px;
-    border-radius:10px;
-    font-weight:bold;
+    padding:18px;
+    border-radius:12px;
     font-size:18px;
+    font-weight:bold;
+}
+
+.button:hover{
+    background:#d90000;
 }
 
 .small{
-    margin-top:20px;
+    margin-top:24px;
     color:#888;
     font-size:14px;
+}
+
+.notice{
+    display:none;
+    margin-bottom:20px;
+    padding:14px;
+    background:#1f2937;
+    border-radius:10px;
+    color:#e5e5e5;
+    font-size:15px;
 }
 </style>
 </head>
@@ -76,11 +94,15 @@ img{
 
 <div class="logo">📺</div>
 
-<h1>Opening YouTube...</h1>
+<h1>Opening YouTube</h1>
+
+<div id="notice" class="notice">
+Instagram requires your permission before opening the YouTube app.<br><br>
+Tap <strong>Open in YouTube</strong> below.
+</div>
 
 <p>
-If nothing happens automatically,
-tap the button below.
+Watch this video in the YouTube app for the best experience.
 </p>
 
 <img id="thumbnail">
@@ -89,7 +111,7 @@ tap the button below.
 id="openButton"
 class="button"
 href="#">
-Open Video
+▶ Open in YouTube
 </a>
 
 <div class="small">
@@ -100,58 +122,79 @@ Kiku Ki Pathshala ❤️
 
 <script>
 
-const params=new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 
-const videoId=params.get("v");
+const videoId = params.get("v");
 
-const channelUrl="https://youtube.com/@kikukipathshala";
+const channelUrl = "https://youtube.com/@kikukipathshala";
 
 if(!videoId){
-
     window.location.replace(channelUrl);
-
 }
 
-const webUrl=`https://www.youtube.com/watch?v=${videoId}`;
+const webUrl =
+`https://www.youtube.com/watch?v=${videoId}`;
 
-const iosUrl=`youtube://www.youtube.com/watch?v=${videoId}`;
+const iosUrl =
+`youtube://www.youtube.com/watch?v=${videoId}`;
 
-const androidIntent=
+const androidIntent =
 `intent://www.youtube.com/watch?v=${videoId}#Intent;scheme=https;package=com.google.android.youtube;end`;
 
-document.getElementById("thumbnail").src=
+const thumb =
+document.getElementById("thumbnail");
+
+thumb.src =
 `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-document.getElementById("thumbnail").style.display="block";
+thumb.style.display = "block";
 
-document.getElementById("openButton").href=webUrl;
+document
+.getElementById("openButton")
+.href = webUrl;
 
 function openVideo(){
 
     if(/android/i.test(navigator.userAgent)){
-        window.location=androidIntent;
+        window.location = androidIntent;
     }
     else if(/iPad|iPhone|iPod/.test(navigator.userAgent)){
-        window.location=iosUrl;
+        window.location = iosUrl;
     }
 
     setTimeout(()=>{
-        window.location=webUrl;
-    },1200);
+        window.location = webUrl;
+    },1500);
 
 }
 
-window.onload=openVideo;
-
 document
 .getElementById("openButton")
-.onclick=function(e){
+.addEventListener("click",function(e){
 
     e.preventDefault();
 
     openVideo();
 
-};
+});
+
+const ua = navigator.userAgent;
+
+const isInstagram =
+/Instagram/i.test(ua);
+
+if(isInstagram){
+
+    document
+    .getElementById("notice")
+    .style.display = "block";
+
+}
+else{
+
+    openVideo();
+
+}
 
 </script>
 
