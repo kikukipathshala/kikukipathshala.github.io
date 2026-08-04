@@ -70,16 +70,6 @@ img{
     color:#888;
     font-size:14px;
 }
-
-.notice{
-    display:none;
-    margin-bottom:20px;
-    padding:14px;
-    background:#1f2937;
-    border-radius:10px;
-    color:#e5e5e5;
-    font-size:15px;
-}
 </style>
 </head>
 
@@ -111,68 +101,70 @@ Kiku Ki Pathshala ❤️
 <script>
 
 const params = new URLSearchParams(window.location.search);
-
 const videoId = params.get("v");
-
 const channelUrl = "https://youtube.com/@kikukipathshala";
 
-if(!videoId){
-    window.location.replace(channelUrl);
-}
+// No video id? Go to channel and stop.
+if (!videoId) {
 
-const webUrl =
-`https://www.youtube.com/watch?v=${videoId}`;
+    window.location.href = channelUrl;
 
-const iosUrl =
-`youtube://www.youtube.com/watch?v=${videoId}`;
+} else {
 
-const androidIntent =
-`intent://www.youtube.com/watch?v=${videoId}#Intent;scheme=https;package=com.google.android.youtube;end`;
+    const webUrl =
+    `https://www.youtube.com/watch?v=${videoId}`;
 
-const thumb =
-document.getElementById("thumbnail");
+    const iosUrl =
+    `youtube://www.youtube.com/watch?v=${videoId}`;
 
-thumb.src =
-`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    const androidIntent =
+    `intent://www.youtube.com/watch?v=${videoId}#Intent;scheme=https;package=com.google.android.youtube;end`;
 
-thumb.style.display = "block";
+    const thumb =
+    document.getElementById("thumbnail");
 
-document
-.getElementById("openButton")
-.href = webUrl;
+    thumb.src =
+    `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-function openVideo(){
+    thumb.style.display = "block";
 
-    if(/android/i.test(navigator.userAgent)){
-        window.location = androidIntent;
+    document
+    .getElementById("openButton")
+    .href = webUrl;
+
+    function openVideo(){
+
+        if(/android/i.test(navigator.userAgent)){
+            window.location = androidIntent;
+        }
+        else if(/iPad|iPhone|iPod/.test(navigator.userAgent)){
+            window.location = iosUrl;
+        }
+
+        setTimeout(()=>{
+            window.location = webUrl;
+        },1500);
+
     }
-    else if(/iPad|iPhone|iPod/.test(navigator.userAgent)){
-        window.location = iosUrl;
+
+    document
+    .getElementById("openButton")
+    .addEventListener("click",function(e){
+
+        e.preventDefault();
+        openVideo();
+
+    });
+
+    const isInstagram =
+    /Instagram/i.test(navigator.userAgent);
+
+    if(!isInstagram){
+
+        openVideo();
+
     }
 
-    setTimeout(()=>{
-        window.location = webUrl;
-    },1500);
-
-}
-
-document
-.getElementById("openButton")
-.addEventListener("click",function(e){
-
-    e.preventDefault();
-
-    openVideo();
-
-});
-
-const ua = navigator.userAgent;
-
-const isInstagram =
-/Instagram/i.test(ua);
-
-if (!isInstagram) {
-    openVideo();
 }
 
 </script>
