@@ -107,7 +107,25 @@ const channelUrl = "https://youtube.com/@kikukipathshala";
 // No video id? Go to channel and stop.
 if (!videoId) {
 
-    window.location.href = channelUrl;
+    const channelWeb =
+        "https://youtube.com/@kikukipathshala";
+
+    const channelIOS =
+        "youtube://www.youtube.com/@kikukipathshala";
+
+    const channelAndroid =
+        "intent://www.youtube.com/@kikukipathshala#Intent;scheme=https;package=com.google.android.youtube;end";
+
+    if (/android/i.test(navigator.userAgent)) {
+        window.location = channelAndroid;
+    }
+    else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.location = channelIOS;
+    }
+
+    setTimeout(() => {
+        window.location = channelWeb;
+    }, 1500);
 
 } else {
 
