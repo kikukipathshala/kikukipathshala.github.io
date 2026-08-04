@@ -102,32 +102,51 @@ Kiku Ki Pathshala ❤️
 
 const params = new URLSearchParams(window.location.search);
 const videoId = params.get("v");
-const channelUrl = "https://youtube.com/@kikukipathshala";
 
-// No video id? Go to channel and stop.
+const handle = "kikukipathshala";
+
+// ------------------------
+// CHANNEL MODE
+// ------------------------
 if (!videoId) {
 
-    const channelWeb =
-        "https://youtube.com/@kikukipathshala";
+    const webUrl = `https://youtube.com/@${handle}`;
+    const iosUrl = `youtube://www.youtube.com/@${handle}`;
+    const androidIntent =
+    `intent://www.youtube.com/@${handle}#Intent;scheme=https;package=com.google.android.youtube;end`;
 
-    const channelIOS =
-        "youtube://www.youtube.com/@kikukipathshala";
+    document.getElementById("openButton").href = webUrl;
 
-    const channelAndroid =
-        "intent://www.youtube.com/@kikukipathshala#Intent;scheme=https;package=com.google.android.youtube;end";
+    function openChannel(){
 
-    if (/android/i.test(navigator.userAgent)) {
-        window.location = channelAndroid;
+        if (/android/i.test(navigator.userAgent)) {
+            window.location = androidIntent;
+        }
+        else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            window.location = iosUrl;
+        }
+
+        setTimeout(() => {
+            window.location = webUrl;
+        },1500);
+
     }
-    else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        window.location = channelIOS;
-    }
 
-    setTimeout(() => {
-        window.location = channelWeb;
-    }, 1500);
+    document.getElementById("openButton").onclick = function(e){
 
-} else {
+        e.preventDefault();
+        openChannel();
+
+    };
+
+    window.onload = openChannel;
+
+}
+
+// ------------------------
+// VIDEO MODE
+// ------------------------
+else {
 
     const webUrl =
     `https://www.youtube.com/watch?v=${videoId}`;
@@ -179,7 +198,7 @@ if (!videoId) {
 
     if(!isInstagram){
 
-        openVideo();
+        window.onload = openVideo;
 
     }
 
